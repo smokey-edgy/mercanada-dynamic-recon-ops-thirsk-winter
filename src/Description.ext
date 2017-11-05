@@ -1,0 +1,279 @@
+#include "sunday_system\dialogs\defines.hpp"
+#include "sunday_system\dialogs\dialogs.hpp"
+
+enableDebugConsole = 1;
+
+corpseManagerMode = 1;
+corpseLimit = 1;
+corpseRemovalMinTime = 900;
+corpseRemovalMaxTime = 3600;
+
+respawn = 3;
+respawnButton = 1;
+respawnDelay = 45;
+respawnDialog = 0;
+respawnOnStart = 0;
+respawnTemplates[] = {"MenuPosition", "Tickets", "Spectator", "EndMission"};
+
+class Params
+{
+	class Respawn
+	{
+		title = "Respawn";
+		values[] = {0,1,2,3};
+		texts[] = {"20 Seconds", "45 Seconds", "90 Seconds", "Disabled"};
+		default = 1;
+	};
+	class RespawnPositions
+	{
+		title = "Respawn Positions";
+		values[] = {0,1,2};
+		texts[] = {"Both", "Starting location only", "Team only"};
+		default = 0;
+	};
+};
+
+class CfgCommunicationMenu
+{
+	class heliExtract
+    {
+        text = "Request extraction"; // Text displayed in the menu and in a notification
+        submenu = ""; // Submenu opened upon activation (expression is ignored when submenu is not empty.)
+        expression = "[_pos] execVM 'sunday_system\heliExtract.sqf'"; // Code executed upon activation
+        icon = "\a3\Ui_f\data\GUI\Cfg\CommunicationMenu\transport_ca.paa"; // Icon displayed permanently next to the command menu
+        cursor = "\a3\Ui_f\data\IGUI\Cfg\Cursors\iconCursorSupport_ca.paa"; // Custom cursor displayed when the item is selected
+        enable = "1"; // Simple expression condition for enabling the item
+        removeAfterExpressionCall = 1; // 1 to remove the item after calling
+    };
+	class extractLeave
+    {
+        text = "Extract"; // Text displayed in the menu and in a notification
+        submenu = ""; // Submenu opened upon activation (expression is ignored when submenu is not empty.)
+        expression = "extractLeave = true; publicVariable 'extractLeave'"; // Code executed upon activation
+        icon = "\a3\Ui_f\data\GUI\Cfg\CommunicationMenu\transport_ca.paa"; // Icon displayed permanently next to the command menu
+        cursor = ""; // Custom cursor displayed when the item is selected
+        enable = "1"; // Simple expression condition for enabling the item
+        removeAfterExpressionCall = 1; // 1 to remove the item after calling
+    };
+};
+
+class CfgDebriefing
+{
+	class DROEnd_Full
+	{
+		title = "Mission Completed";
+		subtitle = "";
+		description = "The recon operation is complete success, all objectives accomplished. Good work.";
+		pictureBackground = "images\recon_image_notext.jpg";
+		picture = "";
+		pictureColor[] = {0.0,0.3,0.6,1};
+	};
+	class DROEnd_Partial
+	{
+		title = "Mission Completed";
+		subtitle = "";
+		description = "The recon operation is a partial success. Command will assign another team to pursue the remaining objectives.";
+		pictureBackground = "images\recon_image_notext.jpg";
+		picture = "";
+		pictureColor[] = {0.0,0.3,0.6,1};
+	};
+	class DROEnd_Fail
+	{
+		title = "Mission Failed";
+		subtitle = "";
+		description = "We're considering this operation a failure. None of the objectives have been completed and your team has been commanded to stand down while a full debrief is prepared.";
+		pictureBackground = "images\recon_image_notext.jpg";
+		picture = "";
+		pictureColor[] = {0.5,0.4,0.4,1};
+	};
+};
+
+class CfgSounds
+{
+	class bcg_wind
+	{
+		name = "bcg_wind";
+		sound[] = {"\AL_snowstorm\bcg_wind.ogg", 0.3, 1};
+		titles[] = {1, ""};
+	};
+	class bcg_wind_mild
+	{
+		name = "bcg_wind_mild";
+		sound[] = {"\AL_snowstorm\bcg_wind_mild.ogg", 0.05, 1};
+		titles[] = {1, ""};
+	};
+	class rafala_1
+	{
+		name = "rafala_1";
+		sound[] = {"\AL_snowstorm\rafala_1.ogg", db+10, 1};
+		titles[] = {1, ""};
+	};
+	class rafala_2
+	{
+		name = "rafala_2";
+		sound[] = {"\AL_snowstorm\rafala_2.ogg", db+5, 1};
+		titles[] = {1, ""};
+	};
+	class rafala_6
+	{
+		name = "rafala_6";
+		sound[] = {"\AL_snowstorm\rafala_6.ogg", db+15, 1};
+		titles[] = {1, ""};
+	};
+	class rafala_7
+	{
+		name = "rafala_7";
+		sound[] = {"\AL_snowstorm\rafala_7.ogg", db+10, 1};
+		titles[] = {1, ""};
+	};
+	class rafala_8
+	{
+		name = "rafala_8";
+		sound[] = {"\AL_snowstorm\rafala_8.ogg", db+15, 1};
+		titles[] = {1, ""};
+	};
+	class rafala_9
+	{
+		name = "rafala_9";
+		sound[] = {"\AL_snowstorm\rafala_9.ogg", db+10, 1};
+		titles[] = {1, ""};
+	};
+	class tree_crack_1
+	{
+		name = "tree_crack_1";
+		sound[] = {"\AL_snowstorm\tree_crack_1.ogg", db+5, 1};
+		titles[] = {1, ""};
+	};
+	class tree_crack_2
+	{
+		name = "tree_crack_2";
+		sound[] = {"\AL_snowstorm\tree_crack_2.ogg", db+5, 1};
+		titles[] = {1, ""};
+	};
+	class tree_crack_3
+	{
+		name = "tree_crack_3";
+		sound[] = {"\AL_snowstorm\tree_crack_3.ogg", db+5, 1};
+		titles[] = {1, ""};
+	};
+	class tree_crack_4
+	{
+		name = "tree_crack_4";
+		sound[] = {"\AL_snowstorm\tree_crack_4.ogg", db+5, 1};
+		titles[] = {1, ""};
+	};
+	class tree_crack_5
+	{
+		name = "tree_crack_5";
+		sound[] = {"\AL_snowstorm\tree_crack_5.ogg", db+5, 1};
+		titles[] = {1, ""};
+	};
+	class tree_crack_6
+	{
+		name = "tree_crack_6";
+		sound[] = {"\AL_snowstorm\tree_crack_6.ogg", db+5, 1};
+		titles[] = {1, ""};
+	};
+	class tree_crack_7
+	{
+		name = "tree_crack_7";
+		sound[] = {"\AL_snowstorm\tree_crack_7.ogg", db+5, 1};
+		titles[] = {1, ""};
+	};
+	class tree_crack_8
+	{
+		name = "tree_crack_8";
+		sound[] = {"\AL_snowstorm\tree_crack_8.ogg", db+5, 1};
+		titles[] = {1, ""};
+	};
+	class tree_crack_9
+	{
+		name = "tree_crack_9";
+		sound[] = {"\AL_snowstorm\tree_crack_9.ogg", db+5, 1};
+		titles[] = {1, ""};
+	};
+	class lup_01
+	{
+		name = "lup_01";
+		sound[] = {"\AL_snowstorm\lup_01.ogg", 1, 1};
+		titles[] = {};
+	};
+	class lup_02
+	{
+		name = "lup_02";
+		sound[] = {"\AL_snowstorm\lup_02.ogg", 1, 1};
+		titles[] = {};
+	};
+	class lup_03
+	{
+		name = "lup_03";
+		sound[] = {"\AL_snowstorm\lup_03.ogg", 1, 1};
+		titles[] = {};
+	};
+	class tremurat_1
+	{
+		name = "tremurat_1";
+		sound[] = {"\AL_snowstorm\tremurat_1.ogg", 1, 1};
+		titles[] = {1, ""};
+	};
+	class tremurat_2
+	{
+		name = "tremurat_2";
+		sound[] = {"\AL_snowstorm\tremurat_2.ogg", 1, 1};
+		titles[] = {1, ""};
+	};
+	class tremurat_3
+	{
+		name = "tremurat_3";
+		sound[] = {"\AL_snowstorm\tremurat_3.ogg", 1, 1};
+		titles[] = {1, ""};
+	};
+	class tremurat_4
+	{
+		name = "tremurat_4";
+		sound[] = {"\AL_snowstorm\tremurat_4.ogg", 1, 1};
+		titles[] = {1, ""};
+	};
+	class NoSound
+	{
+		name = "NoSound";
+		sound[] = {"", 0, 1};
+		titles[] = {0, ""};
+	};
+	class tuse_1
+	{
+		name = "tuse_1";
+		sound[] = {"\AL_snowstorm\tuse_1.ogg", 1, 1};
+		titles[] = {1, ""};
+	};
+	class tuse_2
+	{
+		name = "tuse_2";
+		sound[] = {"\AL_snowstorm\tuse_2.ogg", 1, 1};
+		titles[] = {1, ""};
+	};
+	class tuse_3
+	{
+		name = "tuse_3";
+		sound[] = {"\AL_snowstorm\tuse_3.ogg", 1, 1};
+		titles[] = {1, ""};
+	};
+	class tuse_4
+	{
+		name = "tuse_4";
+		sound[] = {"\AL_snowstorm\tuse_4.ogg", 1, 1};
+		titles[] = {1, ""};
+	};
+	class tuse_5
+	{
+		name = "tuse_5";
+		sound[] = {"\AL_snowstorm\tuse_5.ogg", 1, 1};
+		titles[] = {1, ""};
+	};
+	class tuse_6
+	{
+		name = "tuse_6";
+		sound[] = {"\AL_snowstorm\tuse_6.ogg", 1, 1};
+		titles[] = {1, ""};
+	};
+};
